@@ -191,6 +191,7 @@ public class gdh {
             }
 
             //comprueba si ya ha marcado la entrada
+            //TODO comprobar "Sin fichaje/No Completo"
             if (checkBefore){
 
                 //Simular el movimiento del ratón
@@ -256,6 +257,7 @@ public class gdh {
             }
 
             //hago click en entrada/salida
+            
             if (attendType.equals("entrada")){
                 if (mainWindowHandle!=null){
                     driver.switchTo().window(mainWindowHandle);
@@ -285,6 +287,7 @@ public class gdh {
                 }
             }
 
+            //TODO programar la salida
             if (attendType.equals("salida")){
                 //Salida
                 anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table/tbody/tr[2]/td[2]/a"));
