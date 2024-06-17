@@ -10,7 +10,7 @@ This program run over Linux (debian distros like Ubuntu, Xubuntu, Lubuntu or deb
 - Apache Maven [https://maven.apache.org/download.cgi]
 - Selenium Web Package (included in pom.xml)
 - Log 4 Java (included in pom.xml)
-- Google Chrome Version 109.0.5414.74 (check url)
+- Google Chrome Version 109.0.5414.74 (url TBD)
 - Selenium Chromedriver for Google Chrome [https://chromedriver.storage.googleapis.com/index.html?path=109.0.5414.74/]
 
 ## Installation instructions ##
@@ -46,7 +46,6 @@ The parameters has to given using *parameter*=*value*, and it doesn't matter the
 For example:
 ```
 java -jar <jar file> user=johnDoe pass=MySuperSecretPassword1234 attendType=entrada
-
 ```
 With that execution, will start test program to log in or log out, and it will show the results in the command line. 
 
