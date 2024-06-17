@@ -135,7 +135,7 @@ public class gdh {
             Thread.sleep(3000);
 
             //idioma
-            if (lang.equals("es")){
+            if (lang != null && lang.equals("es")){
                 anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[1]/div[2]/ul/li/p/a[2]"));
                 anchor.click();
                 Thread.sleep(1500);
@@ -215,44 +215,17 @@ public class gdh {
                     e.printStackTrace();
                 }
 
-
-                //<a href="javascript:document.Formulario_listado_fichajes.submit();">Llista de fitxatges per a aqueixa jornada</a>
-                js.executeScript("document.Formulario_listado_fichajes.submit();");
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
+                String text = anchor.getText();
+                if (text.equals("Sin fichajes") || text.equals("Sense fitxatges")){
+                    log.info("No ha marcado la entrada");
+                    existCheckIn=false;
                 }
-                // Llista buida?
-                try {
-                    alert = driver.switchTo().alert();
-                    if (alert != null) {
-                        alert.accept();
-                    }
-                } catch (Exception e) {
-                    log.info("No existe alert (¿Ya ha marcado la entrada?)");
-                }
-
-                try{
-                    //fecha de entrada
-                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table[2]/tbody/tr[2]/td[1]"));
-                    fecha = anchor.getText();
-                    //hora de entrada
-                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table[2]/tbody/tr[2]/td[3]"));
-                    String hora = anchor.getText();
-                    if (hora.equals("")){
-                        log.info("No ha marcado la entrada");
-                    }
-                    else{
-                        log.info("Ya ha marcado la entrada a las " + hora);
-                        driver.close();
-                        log.info("Saliendo del sistema");
-                        existCheckIn = true;
-                        System.exit(1);
-                    }
-                }
-                catch (Exception e){
-                    log.info("No hay registros de asistencia para el día de hoy");
+                else{
+                    log.info("Ya ha marcado la entrada, estado:" + text);
+                    driver.close();
+                    log.info("Saliendo del sistema");
+                    System.exit(1);
                 }
             }
 
