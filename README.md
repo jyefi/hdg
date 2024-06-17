@@ -39,13 +39,13 @@ The jar program uses some parameters
 - checkBefore (optional): Verify, if the shift has been previously opened ['true', 'false'](default=false)
 - checkAfter (optional): Verify, if the shift has been previously closed ['true', 'false'](default=false)
 - attendType (mandatory) : ['entrada','salida']
-- lang (optional) ['es', 'cat'](default=false)
+- lang (optional): ['es', 'cat'](default=false)
 
-The parameters has to given using *parameter*=*value*, and it doesn't matter the order. If you don't use this sintaxis, you will get a warning
+The parameters has to given using *parameter*=*value*, and it doesn't matter the order. If you don't use this sintaxis, you will get a warning.
 
 For example:
 ```
-java -jar *jar file* user=johnDoe pass=MySuperSecretPassword1234 attendType=entrada
+java -jar [jar file] user=johnDoe pass=MySuperSecretPassword1234 attendType=entrada
 ```
 Running this jar file will initiate a test program. This program will simulate the process of logging in and logging out, and the results will be displayed in the command line.
 
