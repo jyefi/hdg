@@ -1,10 +1,11 @@
 
+# HDG
 Automate program to log in and log out.
 
-# Use this system Carefully
-This program is given AS-IS, no warranties at all.
+## Use this system Carefully
+This program is distributed AS-IS, no warranties at all.
 
-# Requirements
+## Requirements
 This program run over Linux (debian distros like Ubuntu, Xubuntu, Lubuntu or debian), and uses the following requirements:
 - Java runtime (openjdk) 17 or higher
 - Apache Maven [https://maven.apache.org/download.cgi]
@@ -13,15 +14,20 @@ This program run over Linux (debian distros like Ubuntu, Xubuntu, Lubuntu or deb
 - Google Chrome Version 109.0.5414.74 (check url)
 - Selenium Chromedriver for Google Chrome [https://chromedriver.storage.googleapis.com/index.html?path=109.0.5414.74/]
 
-# Installation instructions
+## Installation instructions
 To beginning, you have to download and install prerrequisites: Java runtime 17 (openjdk), Google Chrome and Chromedriver
 This system has been tested on that components succesfully.
 
-After that, you can install Selenium Web and Log4 Java usign command line:
+After that, you can clone this repository executing:
+```
+BASH
+git clone https://github.com/jyefi/hdg.git
 
-```` `
+```
+
+```
 mvn clean install package -Dskiptests
-```` `
+```
 
 Executing that, you will get the jar file who will execute the automation process.
 
