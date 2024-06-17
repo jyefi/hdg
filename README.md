@@ -32,9 +32,10 @@ The last command, make a maven clean, installs the dependencies (Log4Java and Se
 
 ## Use ##
 
-The jar program uses some parameters
-- user (mandatory): the username used
-- pass (mandatory): the password used
+The program utilizes specific parameters which will be explained below.
+
+- user (mandatory): the username used to log in
+- pass (mandatory): the password used to log out
 - silent (optional): show/hide UI interface ['true', 'false'](default=false)
 - checkBefore (optional): Verify, if the shift has been previously opened ['true', 'false'](default=false)
 - checkAfter (optional): Verify, if the shift has been previously closed ['true', 'false'](default=false)
