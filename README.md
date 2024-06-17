@@ -20,7 +20,6 @@ This system has been tested on that components succesfully.
 After that, you can clone this repository executing in a terminal:
 ```
 git clone https://github.com/jyefi/hdg.git
-
 ```
 
 And then you have to generate jar file, executing in a terminal:
@@ -42,7 +41,7 @@ The jar program uses some parameters
 - attendType (mandatory) : ['entrada','salida']
 - lang (optional) ['es', 'cat'](default=false)
 
-The parameters has to given using <parameter>=<value>, and it doesn't matter the order. If you don't use this sintaxis, you will get a warning
+The parameters has to given using *parameter*=*value*, and it doesn't matter the order. If you don't use this sintaxis, you will get a warning
 
 For example:
 ```
