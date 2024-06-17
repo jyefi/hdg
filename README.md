@@ -8,8 +8,8 @@ This program is distributed AS-IS, no warranties at all.
 This program run over Linux (debian distros like Ubuntu, Xubuntu, Lubuntu or debian), and uses the following requirements:
 - Java runtime (openjdk) 17 or higher
 - Apache Maven [https://maven.apache.org/download.cgi]
-- Selenium Web Package
-- Log 4 Java
+- Selenium Web Package (included in pom.xml)
+- Log 4 Java (included in pom.xml)
 - Google Chrome Version 109.0.5414.74 (check url)
 - Selenium Chromedriver for Google Chrome [https://chromedriver.storage.googleapis.com/index.html?path=109.0.5414.74/]
 
@@ -49,5 +49,11 @@ For example:
 java -jar <jar file> user=johnDoe pass=MySuperSecretPassword1234 attendType=entrada
 
 ```
-With that execution, will start test program to log in or log out
+With that execution, will start test program to log in or log out, and it will show the results in the command line. 
+
+## Future releases ##
+
+- Send an email to communicate the result to the user
+- Random time before/after 
+- Read program params from a file
 
