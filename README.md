@@ -45,9 +45,9 @@ The parameters has to given using *parameter*=*value*, and it doesn't matter the
 
 For example:
 ```
-java -jar <jar file> user=johnDoe pass=MySuperSecretPassword1234 attendType=entrada
+java -jar *jar file* user=johnDoe pass=MySuperSecretPassword1234 attendType=entrada
 ```
-With that execution, will start test program to log in or log out, and it will show the results in the command line. 
+Running this jar file will initiate a test program. This program will simulate the process of logging in and logging out, and the results will be displayed in the command line.
 
 ## Future releases ##
 
