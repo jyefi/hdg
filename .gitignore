@@ -90,3 +90,4 @@ nb-configuration.xml
 ## Miscellaneous
 ##############################
 *.log
+.vscode/launch.json
