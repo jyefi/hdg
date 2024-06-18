@@ -223,7 +223,6 @@ public class gdh {
                         log.info("Ya ha marcado la entrada, estado: " + text);
                         driver.close();
                         log.info("Saliendo del sistema");
-                        System.exit(1);
                     }
                 }
                 if (mainWindowHandle!=null){
@@ -255,7 +254,7 @@ public class gdh {
                 }
             }
 
-            // Testeado 18/06/2024
+            // Falla el cierre, hacer nuevas pruebas
             if (attendType.equals("salida")){
 
                 if (attendType.equals("entrada")){
@@ -289,46 +288,42 @@ public class gdh {
                 } catch (Exception e) {
                     log.info("No existe alert (¿Ya ha marcado la entrada?)");
                 }
-
-            }
-
-            if (checkAfter){
-                //Simular la entrada a "Calendario"
-                action = new Actions(driver);
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
-                action.moveToElement(anchor).perform();
-
-                action.click().perform();
+                if (checkAfter){
+                    //Simular la entrada a "Calendario"
+                    action = new Actions(driver);
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
+                    action.moveToElement(anchor).perform();
+    
+                    action.click().perform();
+                    Thread.sleep(1500);
+    
+                    js = (JavascriptExecutor) driver;
+    
+                    String fecha = java.time.LocalDate.now().toString();
+                    js.executeScript("enviar('" + fecha + "');");
+                    
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+    
+                    //Obtiene el Estado
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
+                    String text = anchor.getText().trim();
+                    if (text == "Complet" || text == "Completo"){
+                        log.info("No ha marcado la entrada");
+                    }
+                    else{
+                        log.info("Ya ha marcado la entrada, estado: " + text);
+                        driver.close();
+                        log.info("Saliendo del sistema");
+                    }
+                //driver.wait(3000);
                 Thread.sleep(1500);
 
-                js = (JavascriptExecutor) driver;
-
-                String fecha = java.time.LocalDate.now().toString();
-                js.executeScript("enviar('" + fecha + "');");
-                
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-
-                //Obtiene el Estado
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
-                String text = anchor.getText().trim();
-                if (text == "Complet" || text == "Completo"){
-                    log.info("No ha marcado la entrada");
-                }
-                else{
-                    log.info("Ya ha marcado la entrada, estado: " + text);
-                    driver.close();
-                    log.info("Saliendo del sistema");
-                    System.exit(1);
-                }
-
-
             }
-            //driver.wait(3000);
-            Thread.sleep(1500);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
