@@ -35,8 +35,6 @@ public class gdh {
         String textAlert=null;
         String mainWindowHandle = null;
 
-        Boolean existCheckIn=false;
-
         int min = 152427; // Minimum value of range
         int max = 726837; // Maximum value of range
 
@@ -97,7 +95,6 @@ public class gdh {
         //java.lang.Thread.sleep(random_int);
 
         WebElement anchor;
-        //TODO: Agregar: Try catch y aviso en caso de no ejecución (mail Log4j2)
 
         try {
             System.setProperty("webdriver.chrome.driver", "/home/jaime/Documents/dev/chromedriver/chromedriver");
@@ -190,7 +187,7 @@ public class gdh {
             }
 
             //comprueba si ya ha marcado la entrada
-            //TODO comprobar "Sin fichaje/No Completo"
+            //TODO Testear
             if (checkBefore){
 
                 //Simular el movimiento del ratón
@@ -218,7 +215,6 @@ public class gdh {
                 String text = anchor.getText().trim();
                 if (text == "Sin fichajes" || text == "Sense fitxatges"){
                     log.info("No ha marcado la entrada");
-                    existCheckIn=false;
                 }
                 else{
                     log.info("Ya ha marcado la entrada, estado: " + text);
@@ -260,7 +256,7 @@ public class gdh {
                 }
             }
 
-            // TODO : Testear
+            // TODO Testear
             if (attendType.equals("salida")){
 
                 if (attendType.equals("entrada")){
@@ -322,7 +318,6 @@ public class gdh {
                 String text = anchor.getText().trim();
                 if (text == "Complet" || text == "Completo"){
                     log.info("No ha marcado la entrada");
-                    existCheckIn=false;
                 }
                 else{
                     log.info("Ya ha marcado la entrada, estado: " + text);
