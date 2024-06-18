@@ -186,47 +186,46 @@ public class gdh {
                 Thread.sleep(1500);
             }
 
-            //comprueba si ya ha marcado la entrada
-            //TODO Testear
-            if (checkBefore){
-
-                //Simular el movimiento del ratón
-                action = new Actions(driver);
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
-                action.moveToElement(anchor).perform();
-
-                //Simular un clic del ratón
-                action.click().perform();
-                Thread.sleep(1500);
-
-                js = (JavascriptExecutor) driver;
-
-                String fecha = java.time.LocalDate.now().toString();
-                js.executeScript("enviar('" + fecha + "');");
-
-                // Esperar un poco para ver la alerta
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
-                String text = anchor.getText().trim();
-                if (text == "Sin fichajes" || text == "Sense fitxatges"){
-                    log.info("No ha marcado la entrada");
-                }
-                else{
-                    log.info("Ya ha marcado la entrada, estado: " + text);
-                    driver.close();
-                    log.info("Saliendo del sistema");
-                    System.exit(1);
-                }
-            }
-
             //hago click en entrada/salida
             
             if (attendType.equals("entrada")){
+
+                //comprueba si ya ha marcado la entrada
+                if (checkBefore){
+
+                    //Simular el movimiento del ratón
+                    action = new Actions(driver);
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
+                    action.moveToElement(anchor).perform();
+
+                    //Simular un clic del ratón
+                    action.click().perform();
+                    Thread.sleep(1500);
+
+                    js = (JavascriptExecutor) driver;
+
+                    String fecha = java.time.LocalDate.now().toString();
+                    js.executeScript("enviar('" + fecha + "');");
+
+                    // Esperar un poco para ver la alerta
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
+                    String text = anchor.getText().trim();
+                    if (text == "Sin fichajes" || text == "Sense fitxatges"){
+                        log.info("No ha marcado la entrada");
+                    }
+                    else{
+                        log.info("Ya ha marcado la entrada, estado: " + text);
+                        driver.close();
+                        log.info("Saliendo del sistema");
+                        System.exit(1);
+                    }
+                }
                 if (mainWindowHandle!=null){
                     driver.switchTo().window(mainWindowHandle);
                 }
@@ -256,7 +255,7 @@ public class gdh {
                 }
             }
 
-            // TODO Testear
+            // Testeado 18/06/2024
             if (attendType.equals("salida")){
 
                 if (attendType.equals("entrada")){
