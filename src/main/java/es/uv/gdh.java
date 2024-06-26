@@ -34,6 +34,10 @@ public class gdh {
         Alert alert = null;
         String textAlert=null;
         String mainWindowHandle = null;
+        String text=null;
+        boolean isAlreadyOpened=false;
+        boolean isAlreadyClosed=false;
+        String fecha = null;
 
         int min = 152427; // Minimum value of range
         int max = 726837; // Maximum value of range
@@ -115,7 +119,7 @@ public class gdh {
 
             //Login
             driver.get("about:blank"); 
-            Thread.sleep(1500);
+            Thread.sleep(3000);
             driver.get("http://gdh.uv.es");
             Thread.sleep(3000); // Espera a que termine de cargar la página (3 segundos)
 
@@ -134,13 +138,13 @@ public class gdh {
             if (lang != null && lang.equals("es")){
                 anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[1]/div[2]/ul/li/p/a[2]"));
                 anchor.click();
-                Thread.sleep(1500);
+                Thread.sleep(3000);
 
                 alert = driver.switchTo().alert();
                 log.info(alert.getText());
                 alert.accept();
 
-                Thread.sleep(1500);
+                Thread.sleep(3000);
 
                 // Guarda el identificador de la ventana principal
                 mainWindowHandle = driver.getWindowHandle();
@@ -183,12 +187,11 @@ public class gdh {
                 //Botón de login
                 anchor = driver.findElement(By.id("botonLdap"));
                 anchor.click();
-                Thread.sleep(1500);
+                Thread.sleep(3000);
             }
 
-            //hago click en entrada/salida
-            
-            if (attendType.equals("entrada")){
+            // Bloque de entrada
+            if ((attendType.equals("entrada"))){
 
                 //comprueba si ya ha marcado la entrada
                 if (checkBefore){
@@ -200,127 +203,158 @@ public class gdh {
 
                     //Simular un clic del ratón
                     action.click().perform();
-                    Thread.sleep(1500);
+                    Thread.sleep(3000);
 
                     js = (JavascriptExecutor) driver;
 
-                    String fecha = java.time.LocalDate.now().toString();
+                    fecha = java.time.LocalDate.now().toString();
                     js.executeScript("enviar('" + fecha + "');");
 
                     // Esperar un poco para ver la alerta
-                    try {
-                        Thread.sleep(1500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                    Thread.sleep(3000);
+                    
                     anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
-                    String text = anchor.getText().trim();
-                    if (text == "Sin fichajes" || text == "Sense fitxatges"){
+                    text = anchor.getText().trim();
+                    if ("Sin fichajes".equals(text) || "Sense fitxatges".equals(text)){
                         log.info("No ha marcado la entrada");
                     }
                     else{
                         log.info("Ya ha marcado la entrada, estado: " + text);
-                        driver.close();
                         log.info("Saliendo del sistema");
+                        isAlreadyOpened=true;
                     }
                 }
-                if (mainWindowHandle!=null){
-                    driver.switchTo().window(mainWindowHandle);
+                if(isAlreadyOpened){
+                    driver.close();
+                    log.info("Fin de ejecución");
+                    System.exit(1);
                 }
-                //Registre
-                action = new Actions(driver);
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[1]/tbody/tr/td/a"));
-                action.moveToElement(anchor).perform();
+                else{
+                    //Registre
+                    action = new Actions(driver);
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[1]/tbody/tr/td/a"));
+                    action.moveToElement(anchor).perform();
 
-                //Simular un clic del ratón
-                action.click().perform();
-                Thread.sleep(1500);
+                    //Simular un clic del ratón
+                    action.click().perform();
+                    Thread.sleep(3000);
 
-                //Entrada
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table/tbody/tr[2]/td[1]/a"));
-                anchor.click();
+                    //Entrada
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table/tbody/tr[2]/td[1]/a"));
+                    anchor.click();
 
-                try {
-                    alert = driver.switchTo().alert();
-                    if (alert != null) {
-                        Thread.sleep(1500);
-                        textAlert = alert.getText();
-                        alert.accept();
-                        log.info(textAlert);
+                    try {
+                        alert = driver.switchTo().alert();
+                        if (alert != null) {
+                            Thread.sleep(3000);
+                            textAlert = alert.getText();
+                            alert.accept();
+                            log.info(textAlert);
+                        }
+                    } catch (Exception e) {
+                        log.info("No existe alert");
                     }
-                } catch (Exception e) {
-                    log.info("No existe alert (¿Ya ha marcado la entrada?)");
-                }
+                    }
+
             }
 
-            // Falla el cierre, hacer nuevas pruebas
+            // Bloque de salida
             if (attendType.equals("salida")){
 
-                if (attendType.equals("entrada")){
-                    if (mainWindowHandle!=null){
-                        driver.switchTo().window(mainWindowHandle);
-                    }
-                }
-
-                //Registre
+                //Simular la entrada a "Calendario"
+                anchor= driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
                 action = new Actions(driver);
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[1]/tbody/tr/td/a"));
                 action.moveToElement(anchor).perform();
-
-                //Simular un clic del ratón
                 action.click().perform();
-                Thread.sleep(1500);
+                Thread.sleep(3000);
 
-                //Salida
-                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table/tbody/tr[2]/td[2]/a"));
-                            //ejecuta la entrada/salida
-                anchor.click();
+                js = (JavascriptExecutor) driver;
 
-                try {
-                    alert = driver.switchTo().alert();
-                    if (alert != null) {
-                        Thread.sleep(1500);
-                        textAlert = alert.getText();
-                        alert.accept();
-                        log.info(textAlert);
-                    }
-                } catch (Exception e) {
-                    log.info("No existe alert (¿Ya ha marcado la entrada?)");
+                fecha = java.time.LocalDate.now().toString();
+                js.executeScript("enviar('" + fecha + "');");
+
+                // Esperar un poco para ver la alerta
+                Thread.sleep(3000);
+
+                //Obtiene el Estado
+                anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
+                text = anchor.getText().trim();
+                if ("No complet".equals(text) || "No Completo".equals(text)){
+                    log.info("Pendiente de fichar salida [OK]");
                 }
-                if (checkAfter){
-                    //Simular la entrada a "Calendario"
+                else{
+                    log.info("Revisar, estado: " + text);
+                    log.info("Saliendo del sistema");
+                    isAlreadyClosed=true;                   
+                }
+                
+                if (isAlreadyClosed){
+                    driver.close();
+                    log.info("Fin de ejecución");
+                    System.exit(1);
+                }
+                else{
+
+                    //Registre
                     action = new Actions(driver);
-                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[1]/tbody/tr/td/a"));
                     action.moveToElement(anchor).perform();
-    
+
+                    //Simular un clic del ratón
                     action.click().perform();
-                    Thread.sleep(1500);
-    
-                    js = (JavascriptExecutor) driver;
-    
-                    String fecha = java.time.LocalDate.now().toString();
-                    js.executeScript("enviar('" + fecha + "');");
-                    
+                    Thread.sleep(3000);
+
+                    //Salida
+                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/table/tbody/tr[2]/td[2]/a"));
+                                //ejecuta la entrada/salida
+                    anchor.click();
+
                     try {
-                        Thread.sleep(1500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        alert = driver.switchTo().alert();
+                        if (alert != null) {
+                            Thread.sleep(3000);
+                            textAlert = alert.getText();
+                            alert.accept();
+                            log.info(textAlert);
+                        }
+                    } catch (Exception e) {
+                        log.info("No existe alert (¿Ya ha marcado la entrada?)");
                     }
-    
-                    //Obtiene el Estado
-                    anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
-                    String text = anchor.getText().trim();
-                    if (text == "Complet" || text == "Completo"){
-                        log.info("No ha marcado la entrada");
+                    if (checkAfter){
+                        //Simular la entrada a "Calendario"
+                        action = new Actions(driver);
+                        anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr[2]/td/a"));
+                        action.moveToElement(anchor).perform();
+        
+                        action.click().perform();
+                        Thread.sleep(3000);
+        
+                        js = (JavascriptExecutor) driver;
+        
+                        fecha = java.time.LocalDate.now().toString();
+                        js.executeScript("enviar('" + fecha + "');");
+                        
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+        
+                        //Obtiene el Estado
+                        anchor = driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/table/tbody/tr/td[3]/form[3]/table[3]/tbody/tr[2]/td[2]"));
+                        text = anchor.getText().trim();
+                        if ("Complet".equals(text) || "Completo".equals(text)){
+                            log.info("Ya ha marcado la salida");
+                            attendType="Ya marcado";
+                        }
+                        else{
+                            log.info("Revisar, estado: " + text);
+                            log.info("Saliendo del sistema");
+                        }
+
+                        //driver.wait(3000);
+                        Thread.sleep(3000);
                     }
-                    else{
-                        log.info("Ya ha marcado la entrada, estado: " + text);
-                        driver.close();
-                        log.info("Saliendo del sistema");
-                    }
-                //driver.wait(3000);
-                Thread.sleep(1500);
 
                 }
             }
